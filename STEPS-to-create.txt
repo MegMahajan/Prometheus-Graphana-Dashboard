@@ -1,0 +1,31 @@
+Step 5 – Create IAM Service Account with Role
+
+bash
+Copy code
+eksctl create iamserviceaccount --name ebs-csi-controller-sa --namespace kube-system --cluster eks2 --attach-policy-arn arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy --approve --role-only --role-name AmazonEKS_EBS_CSI_DriverRole --region us-east-1
+Step 5.1 – Attach Role to EKS Cluster
+
+bash
+Copy code
+eksctl create addon --name aws-ebs-csi-driver --cluster eks2 --service-account-role-arn arn:aws:iam::164297528770:role/AmazonEKS_EBS_CSI_DriverRole --force --region us-east-1
+Step 5.2 – Verify EBS CSI Driver Pods
+
+bash
+Copy code
+kubectl get pods -n prometheus
+Step 6 – Forward Prometheus Dashboard Ports
+
+bash
+Copy code
+kubectl port-forward deployment/prometheus-server 9090:9090 -n prometheus
+Step 6.1 – Open Prometheus Dashboard in Browser
+
+bash
+Copy code
+curl localhost:9090/graph
+Step 7 – Install Grafana
+
+bash
+Copy code
+helm repo add grafana https://grafana.github.io/helm-charts
+helm repo update
