@@ -1,37 +1,36 @@
 Step 1 – Setup EC2 Instance
-
 Instance Type: t2.medium
 AMI: Ubuntu US-EAST-1
+
 Step 1.1 – Create the IAM role having full access
 
 Go to IAM -> Create role
 Select EC2 -> Give Full admin access
+
 Step 1.2 – Attach the IAM role having full access
 
 Go to EC2 -> Click on Actions on the left-hand side
 Navigate to Security -> Modify IAM role
+
 Step 2 – Install AWS CLI and Configure
 
-bash
-Copy code
 curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
 sudo apt install unzip
 unzip awscliv2.zip
 sudo ./aws/install
+
 Step 3 – Install and Setup Kubectl
 
-bash
-Copy code
 curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
 chmod +x ./kubectl
 sudo mv ./kubectl /usr/local/bin
 kubectl version --short
+
 (Repeat Step 3 as it seems to have been duplicated)
 
 Step 4 – Install and Setup eksctl
 
-bash
-Copy code
+
 curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
 sudo mv /tmp/eksctl /usr/local/bin
 eksctl version
@@ -46,7 +45,7 @@ Step 6 – Create EKS Cluster
 
 bash
 Copy code
-eksctl create cluster --name eks2 --version 1.24 --region us-east-1 --nodegroup-name worker-nodes --node-type t2.medium --nodes 2 --nodes-min 2 --nodes-max 3
+eksctl create cluster --name eks4 --version 1.24 --region us-east-1 --zones=us-east-1b,us-east-1c --nodegroup-name worker-nodes --node-type t2.medium --nodes 2 --nodes-min 2 --nodes-max 3
 awseks update-kubeconfig --region <region-code> --name <cluster-name>
 kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
 Continue with the subsequent steps, following the detailed instructions for Prometheus and Grafana setup. Don't forget to verify and validate each step before proceeding to the next one.
